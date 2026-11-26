@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How Artificial Intelligence Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="viewport">
+  <div id="stage">
+    <canvas id="bg" width="1920" height="1080"></canvas>
+    <div id="scenes"></div>
+    <div id="progress"><i></i></div>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="bPrev" title="Previous (Left arrow)">Prev</button>
+  <button id="bNext" title="Next (Right arrow / Space / click)">Next</button>
+  <button id="bRestart" title="First slide (Home)">Restart</button>
+  <button id="bFull" title="Fullscreen (F)">Fullscreen</button>
+  <span id="sceneLabel">1 / 10</span>
+</div>
+
+<div id="start">
+  <div class="startbox">
+    <h1>How Artificial Intelligence Works</h1>
+    <p>An animated presentation. You control the pace.</p>
+    <button id="startBtn">Start presentation</button>
+    <small>Click, Space or the arrow keys move to the next slide. Press F for fullscreen.</small>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
