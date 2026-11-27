@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fbd3e9">
+<title>Ek chhoti si Sorry 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- Design tokens ---------- */
+:root{
+  --pink:#ffc2dd; --pink-d:#ff7eb6; --lav:#d9c8ff; --lav-d:#9b7fe6;
+  --blue:#bfe3ff; --white:#fff; --ink:#5b3a63; --ink-soft:#8a6a94;
+  --glass:rgba(255,255,255,.55); --glass-b:rgba(255,255,255,.85);
+  --head:'Caveat Brush','Segoe Print','Comic Sans MS',cursive;
+  --body:'Quicksand','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:var(--body);color:var(--ink);overflow-x:hidden;
+  background:linear-gradient(135deg,#ffe0ef 0%,#e8dcff 50%,#d4ecff 100%) fixed;
+}
+/* ---------- Background decorations ---------- */
+.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.55;z-index:0;pointer-events:none}
+.b1{width:320px;height:320px;background:var(--pink);top:-80px;left:-80px}
+.b2{width:360px;height:360px;background:var(--blue);bottom:-100px;right:-100px}
+.b3{width:240px;height:240px;background:var(--lav);top:40%;left:55%}
+#decor{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.float{position:absolute;bottom:-60px;animation:rise linear infinite;opacity:.8}
+@keyframes rise{
+  0%{transform:translate(0,0) rotate(0)}
+  50%{transform:translate(24px,-55vh) rotate(18deg)}
+  100%{transform:translate(-18px,-115vh) rotate(-12deg)}
+}
+/* ---------- Screens ---------- */
+main{position:relative;z-index:2;min-height:100dvh}
+.screen{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:max(20px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom));
+  overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(24px) scale(.97);
+  transition:opacity .6s ease,transform .6s ease,visibility 0s .6s;
+}
+.screen.active{opacity:1;visibility:visible;transform:none;transition:opacity .6s ease,transform .6s ease}
+.card{
+  width:100%;max-width:440px;margin:auto;text-align:center;padding:28px 22px;
+  background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:2px solid var(--glass-b);border-radius:32px;
+  box-shadow:0 18px 50px rgba(155,127,230,.28);
+}
+h1,h2{font-family:var(--head);font-weight:400;color:#c2448a;line-height:1.1}
+h1{font-size:clamp(2.4rem,10vw,3.4rem)}
+h2{font-size:clamp(1.9rem,7.5vw,2.6rem)}
+p{font-size:1.08rem;line-height:1.6;font-weight:600;margin:12px 0}
+/* ---------- Buttons ---------- */
+.btn{
+  font:700 1.05rem var(--body);color:#fff;border:0;cursor:pointer;
+  padding:14px 26px;border-radius:999px;margin:6px;
+  background:linear-gradient(135deg,var(--pink-d),var(--lav-d));
+  box-shadow:0 8px 20px rgba(255,126,182,.4);transition:transform .2s,box-shadow .2s;
+}
+.btn:hover{transform:translateY(-3px) scale(1.04)}
+.btn:active{transform:scale(.95)}
+.btn.alt{background:#fff;color:var(--lav-d);box-shadow:0 8px 20px rgba(155,127,230,.25)}
+:focus-visible{outline:3px solid var(--lav-d);outline-offset:3px}
+/* ---------- Screen 1: envelope ---------- */
+#envWrap{display:flex;flex-direction:column;align-items:center;gap:18px}
+#envWrap.gone{display:none}
+.env{position:relative;width:260px;height:170px;cursor:pointer;animation:bob 3s ease-in-out infinite;border:0;background:none}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.env .back{position:absolute;inset:0;background:#f7a8cf;border-radius:14px;box-shadow:0 14px 30px rgba(194,68,138,.3)}
+.env .paper{position:absolute;left:14px;right:14px;top:14px;height:130px;background:#fff;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:2.4rem;transition:transform .8s .3s ease}
+.env .front{position:absolute;inset:0;border-radius:14px;
+  background:linear-gradient(135deg,#ffc2dd 0 50%,transparent 50%),linear-gradient(225deg,#ffb3d5 0 50%,transparent 50%);
+  clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%)}
+.env .flap{position:absolute;left:0;right:0;top:0;height:95px;background:#ff8fc3;transform-origin:top;
+  clip-path:polygon(0 0,100% 0,50% 100%);transition:transform .7s ease;z-index:3}
+.env .seal{position:absolute;left:50%;top:70px;transform:translateX(-50%);font-size:1.8rem;z-index:4;transition:opacity .3s}
+.env.open{animation:none}
+.env.open .flap{transform:rotateX(180deg);z-index:0}
+.env.open .paper{transform:translateY(-70px)}
+.env.open .seal{opacity:0}
+.hint{font-family:var(--head);font-size:1.5rem;color:#c2448a;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
+#welcomeCard{display:none}
+#welcomeCard.show{display:block;animation:pop .7s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{opacity:0;transform:scale(.6) translateY(30px)}}
+/* ---------- Screen 2: quiz ---------- */
+.dots{display:flex;justify-content:center;gap:8px;margin-bottom:16px}
+.dots i{width:12px;height:12px;border-radius:50%;background:#fff;transition:.4s}
+.dots i.on{background:var(--pink-d);transform:scale(1.3)}
+#qBox{min-height:190px}
+.qin{animation:pop .5s cubic-bezier(.2,1.3,.4,1)}
+#reaction{min-height:56px;font-family:var(--head);font-size:1.6rem;color:var(--lav-d);margin-top:10px;line-height:1.2}
+#reaction.show{animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+/* ---------- Screen 3: message ---------- */
+.heart{width:92px;height:92px;margin:0 auto 6px;filter:drop-shadow(0 0 14px rgba(255,60,130,.55));animation:beat 1.2s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+.msg p{opacity:0;transform:translateY(12px);transition:opacity .8s,transform .8s;margin:10px 0}
+.msg p.in{opacity:1;transform:none}
+.msg p.big{font-family:var(--head);font-size:1.9rem;color:#c2448a;font-weight:400}
+/* ---------- Final screen ---------- */
+.heart.xl{width:130px;height:130px}
+.shout{font-family:var(--head);font-size:clamp(2.3rem,11vw,3.4rem);color:#e0357f;line-height:1.05;text-shadow:0 4px 0 #fff}
+.glow{
+  font:700 1.5rem var(--body);letter-spacing:2px;padding:18px 44px;margin-top:14px;
+  animation:glow 1.6s ease-in-out infinite;
+}
+@keyframes glow{
+  0%,100%{box-shadow:0 0 14px 2px rgba(255,90,160,.6),0 0 30px 6px rgba(255,126,182,.35);transform:scale(1)}
+  50%{box-shadow:0 0 28px 8px rgba(255,90,160,.85),0 0 60px 16px rgba(155,127,230,.5);transform:scale(1.07)}
+}
+/* ---------- Celebration overlay ---------- */
+#party{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;
+  background:radial-gradient(circle at 50% 40%,#fff0f8,#ffd3ea 45%,#dccdff 100%);
+  opacity:0;visibility:hidden;transition:opacity .6s,visibility 0s .6s;overflow:hidden}
+#party.show{opacity:1;visibility:visible;transition:opacity .6s}
+#confetti{position:absolute;inset:0;pointer-events:none}
+.rain{position:absolute;top:-50px;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(115vh) rotate(360deg)}}
+.pcontent{position:relative;max-width:480px;animation:pop .9s cubic-bezier(.2,1.4,.4,1)}
+.pcontent h2{font-size:clamp(2.4rem,11vw,3.8rem);color:#e0357f;text-shadow:0 4px 0 #fff;margin:10px 0}
+.pcontent p{font-family:var(--head);font-size:1.8rem;font-weight:400;color:var(--lav-d)}
+/* ---------- Music toggle ---------- */
+#music{position:fixed;top:max(12px,env(safe-area-inset-top));right:12px;z-index:30;
+  font:700 .9rem var(--body);color:var(--lav-d);background:var(--glass-b);border:2px solid #fff;
+  border-radius:999px;padding:9px 16px;cursor:pointer;box-shadow:0 6px 16px rgba(155,127,230,.3)}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div id="decor" aria-hidden="true"></div>
+
+<button id="music" aria-pressed="false">🎵 Music chalao</button>
+
+<main>
+  <!-- Screen 1: Welcome / envelope -->
+  <section class="screen active" id="s1">
+    <div id="envWrap">
+      <button class="env" id="env" aria-label="Envelope kholo">
+        <div class="back"></div><div class="paper">💌</div><div class="front"></div>
+        <div class="flap"></div><div class="seal">💗</div>
+      </button>
+      <div class="hint">Envelope pe tap karo 🥺</div>
+    </div>
+    <div class="card" id="welcomeCard">
+      <h1>Heyyy! 🥺</h1>
+      <p>I know you're upset with me... but I have something small for you.</p>
+      <button class="btn" id="openBtn">Open My Little Surprise 💌</button>
+    </div>
+  </section>
+
+  <!-- Screen 2: Cute questions -->
+  <section class="screen" id="s2">
+    <div class="card">
+      <div class="dots" id="dots"></div>
+      <div id="qBox"></div>
+      <div id="reaction" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Screen 3: Special message -->
+  <section class="screen" id="s3">
+    <div class="card msg">
+      <svg class="heart" viewBox="0 0 32 29"><defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8fc3"/><stop offset="1" stop-color="#ff3c82"/></linearGradient></defs><path fill="url(#hg)" d="M23.6 0c-3.4 0-5.5 1.7-7.6 4.1C13.9 1.7 11.8 0 8.4 0 3.7 0 0 3.8 0 8.6c0 7.3 8.7 12.1 16 20.4 7.3-8.3 16-13.1 16-20.4C32 3.8 28.3 0 23.6 0z"/></svg>
+      <p class="big">Ek baat kahun? ❤️</p>
+      <p>Agar meri kisi baat se tumhe bura laga, toh I'm genuinely sorry.</p>
+      <p>Mera intention tumhe hurt karna bilkul nahi tha.</p>
+      <p>Tumhari baat mere liye important hai, aur main nahi chahta ki ek misunderstanding ki wajah se humare beech awkwardness rahe.</p>
+      <p>Ab gussa thoda sa kam kar do na... 🥺</p>
+      <button class="btn" id="nextBtn" style="opacity:0;transition:opacity .8s">Aur ek cheez baaki hai 💗</button>
+    </div>
+  </section>
+
+  <!-- Final screen -->
+  <section class="screen" id="s4">
+    <div class="card">
+      <svg class="heart xl" viewBox="0 0 32 29"><path fill="url(#hg)" d="M23.6 0c-3.4 0-5.5 1.7-7.6 4.1C13.9 1.7 11.8 0 8.4 0 3.7 0 0 3.8 0 8.6c0 7.3 8.7 12.1 16 20.4 7.3-8.3 16-13.1 16-20.4C32 3.8 28.3 0 23.6 0z"/></svg>
+      <h2 class="shout">MAAN JAO PLEASE! 🥺❤️</h2>
+      <p>Ek cute si smile ke saath?</p>
+      <button class="btn glow" id="accept">ACCEPT ❤️</button>
+    </div>
+  </section>
+</main>
+
+<!-- Celebration -->
+<div id="party" role="dialog" aria-label="Celebration">
+  <canvas id="confetti"></canvas>
+  <div class="pcontent">
+    <div style="font-size:4rem">🥹🌸💖</div>
+    <h2>YAYYYY! 🥹❤️ Thank you for forgiving me!</h2>
+    <p>Ab ek smile toh banti hai! 😊</p>
+    <button class="btn" id="replay" style="margin-top:18px">Phir se dekho 🔁</button>
+  </div>
+</div>
+
+<script>
+/* ============ Helpers ============ */
+const $ = id => document.getElementById(id);
+const rand = (a, b) => Math.random() * (a - b) + b;
+
+/* ============ Floating background decorations ============ */
+(function makeDecor(){
+  const icons = ['☁️','⭐','🌸','💖','✨','🌷','💗','☁️','🫧'];
+  const wrap = $('decor');
+  const count = innerWidth < 600 ? 16 : 26;
+  for(let i = 0; i < count; i++){
+    const s = document.createElement('span');
+    s.className = 'float';
+    s.textContent = icons[i % icons.length];
+    s.style.left = rand(0, 98) + '%';
+    s.style.fontSize = rand(16, 36) + 'px';
+    s.style.animationDuration = rand(14, 30) + 's';
+    s.style.animationDelay = '-' + rand(0, 30) + 's';
+    wrap.appendChild(s);
+  }
+})();
+
+/* ============ Screen navigation ============ */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  if(id === 's2') showQuestion(0);
+  if(id === 's3') revealMessage();
+}
+
+/* ============ Screen 1: open the envelope ============ */
+$('env').addEventListener('click', () => {
+  $('env').classList.add('open');
+  setTimeout(() => {
+    $('envWrap').classList.add('gone');
+    $('welcomeCard').classList.add('show');
+  }, 1300);
+});
+$('openBtn').addEventListener('click', () => go('s2'));
+
+/* ============ Screen 2: questions ============ */
+const questions = [
+  { q:'Kya tum abhi bhi mujhse naraz ho? 🥺',
+    a:[['Haan 😒','Hmm, fair hai 😅 Par ek baar sun toh lo mujhe!'],
+       ['Thodi si 🙈','Thodi si? Yeh toh progress hai! 🎉']] },
+  { q:'Ek chhoti si smile de sakti ho? 😊',
+    a:[['Okay 😊','Yesss! Woh smile dekh li maine 😍'],
+       ['Sochungi 😏','Chalo, sochne ka time deta hu... tab tak ek cookie 🍪']] },
+  { q:'Agar main sorry bolun toh? 🥹',
+    a:[['Maaf kiya ❤️','Thank you! Tum kitni kind ho 🥹❤️'],
+       ['Pehle sorry bolo!','Hehe sorry sorry sorry! 🙇‍♂️ Ab khush?']] },
+  { q:'Humari baat-cheet important hai na? 🙂',
+    a:[['Of course!','Same here! 😊'],
+       ['Bahut zyada ❤️','Bilkul sahi baat boli tumne 🥺❤️']] }
+];
+function showQuestion(i){
+  const box = $('qBox'), react = $('reaction');
+  react.textContent = ''; react.classList.remove('show');
+  $('dots').innerHTML = questions.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('');
+  const item = questions[i];
+  box.innerHTML = `<div class="qin"><h2>${item.q}</h2><div class="opts" style="margin-top:20px"></div></div>`;
+  const holder = box.querySelector('.opts');
+  item.a.forEach(([label, reply], idx) => {
+    const b = document.createElement('button');
+    b.className = 'btn' + (idx ? ' alt' : '');
+    b.textContent = label;
+    b.onclick = () => {
+      holder.querySelectorAll('button').forEach(x => x.disabled = true); // avoid double taps
+      react.textContent = reply; react.classList.add('show');
+      burstHearts(b);
+      setTimeout(() => (i + 1 < questions.length ? showQuestion(i + 1) : go('s3')), 1900);
+    };
+    holder.appendChild(b);
+  });
+}
+
+/* Little hearts that pop out of a tapped button */
+function burstHearts(el){
+  const r = el.getBoundingClientRect();
+  for(let k = 0; k < 8; k++){
+    const h = document.createElement('span');
+    h.className = 'rain';
+    h.textContent = ['💖','💗','✨','🌸'][k % 4];
+    h.style.left = (r.left + r.width / 2 + rand(-40, 40)) + 'px';
+    h.style.top = (r.top - 10) + 'px';
+    h.style.fontSize = rand(16, 26) + 'px';
+    h.style.zIndex = 15;
+    h.style.animationDuration = rand(1.2, 2) + 's';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 2200);
+  }
+}
+
+/* ============ Screen 3: reveal message line by line ============ */
+function revealMessage(){
+  const lines = document.querySelectorAll('.msg p');
+  lines.forEach(p => p.classList.remove('in'));
+  $('nextBtn').style.opacity = 0;
+  lines.forEach((p, i) => setTimeout(() => p.classList.add('in'), 600 + i * 1500));
+  setTimeout(() => $('nextBtn').style.opacity = 1, 600 + lines.length * 1500);
+}
+$('nextBtn').addEventListener('click', () => go('s4'));
+
+/* ============ Final: accept + celebration ============ */
+const cv = $('confetti'), ctx = cv.getContext('2d');
+let pieces = [], running = false, spawnUntil = 0;
+function resize(){ cv.width = innerWidth; cv.height = innerHeight; }
+addEventListener('resize', resize); resize();
+
+function spawn(n){
+  const colors = ['#ff7eb6','#9b7fe6','#bfe3ff','#ffd6ec','#fff','#ffb3d5'];
+  for(let i = 0; i < n; i++){
+    pieces.push({
+      x: rand(0, cv.width), y: -10, w: rand(6, 12), h: rand(8, 16),
+      vx: rand(-2, 2), vy: rand(2, 5), rot: rand(0, 6), vr: rand(-.2, .2),
+      c: colors[(Math.random() * colors.length) | 0]
+    });
+  }
+}
+function loop(t){
+  if(!running) return;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  if(t < spawnUntil) spawn(4);
+  pieces.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+    ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    ctx.restore();
+  });
+  pieces = pieces.filter(p => p.y < cv.height + 20);
+  requestAnimationFrame(loop);
+}
+let rainTimer;
+function startParty(){
+  $('party').classList.add('show');
+  running = true; pieces = [];
+  spawnUntil = performance.now() + 7000;
+  requestAnimationFrame(loop);
+  // Hearts + flowers falling from the top
+  const icons = ['💖','🌸','💗','🌷','🌼','❤️','✨'];
+  rainTimer = setInterval(() => {
+    const e = document.createElement('span');
+    e.className = 'rain';
+    e.textContent = icons[(Math.random() * icons.length) | 0];
+    e.style.left = rand(0, 96) + '%';
+    e.style.fontSize = rand(22, 42) + 'px';
+    e.style.animationDuration = rand(3, 6) + 's';
+    $('party').appendChild(e);
+    setTimeout(() => e.remove(), 6500);
+  }, 220);
+}
+$('accept').addEventListener('click', startParty);
+
+/* Replay: close celebration, reset everything and go back to the envelope */
+$('replay').addEventListener('click', () => {
+  clearInterval(rainTimer); running = false;
+  $('party').classList.remove('show');
+  document.querySelectorAll('#party .rain').forEach(e => e.remove());
+  $('env').classList.remove('open');
+  $('envWrap').classList.remove('gone');
+  $('welcomeCard').classList.remove('show');
+  go('s1');
+});
+
+/* ============ Optional soft music (WebAudio music box, no files needed) ============ */
+let audio, timer, step = 0, playing = false;
+const scale = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];           // C major pentatonic
+const tune  = [0,2,4,2,3,1,2,0, 2,4,5,4,3,2,1,0, 1,3,4,3,2,1,0,1];     // simple original loop
+function note(freq){
+  const t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain();
+  o.type = 'sine'; o.frequency.value = freq;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(.06, t + .02);
+  g.gain.exponentialRampToValueAtTime(.0001, t + 1.4);
+  o.connect(g); g.connect(audio.destination);
+  o.start(t); o.stop(t + 1.5);
+}
+$('music').addEventListener('click', () => {
+  if(!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+  playing = !playing;
+  if(playing){
+    audio.resume();
+    timer = setInterval(() => note(scale[tune[step++ % tune.length]]), 520);
+  } else {
+    clearInterval(timer);
+  }
+  $('music').textContent = playing ? '🔇 Music band karo' : '🎵 Music chalao';
+  $('music').setAttribute('aria-pressed', playing);
+});
+</script>
+</body>
+</html>
